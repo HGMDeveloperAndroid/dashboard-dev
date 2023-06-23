@@ -153,7 +153,7 @@ export default class LoginPage extends PureComponent {
                     <title>Iniciar sesión</title>
                 </Head>
 
-                <p className={styles.title}>{process.env.NEXT_PUBLIC_API_URL}¡Bienvenido! Ingresa tu contraseña</p>
+                <p className={styles.title}>¡Bienvenido! Ingresa tu contraseña</p>
 
                 <form onSubmit={this.login}>
                     <div className={styles.input}>
