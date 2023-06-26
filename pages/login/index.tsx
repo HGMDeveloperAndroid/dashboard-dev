@@ -10,7 +10,7 @@ import API from '../../utils/api';
 import { createSession } from '../../utils/session-management'
 
 import styles from './login.module.scss'
-
+import { baseURL }from'../../utils/baseUrl'
 type UserResponse = {
     first_name: string,
     last_name: string,
@@ -153,7 +153,7 @@ export default class LoginPage extends PureComponent {
                     <title>Iniciar sesión</title>
                 </Head>
 
-                <p className={styles.title}>{process.env.NEXT_PUBLIC_API_URL} - ¡Bienvenido! Ingresa tu contraseña</p>
+                <p className={styles.title}> '{baseURL}' - ¡Bienvenido! Ingresa tu contraseña</p>
 
                 <form onSubmit={this.login}>
                     <div className={styles.input}>
