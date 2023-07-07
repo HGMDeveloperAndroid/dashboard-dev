@@ -75,7 +75,7 @@ const validateSession = (newRoute?: string) => {
 
 const getHeader = (): { Authorization: string } => {
     const token = localStorage.getItem('token')
-    return { Authorization: `Bearer ${token}` }
+    return { Authorization: `Bearer ${token}`}
 }
 
 const validateIsAnalyst = () => {

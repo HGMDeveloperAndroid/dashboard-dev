@@ -126,6 +126,10 @@ export default class ScannersTab extends Component<any, any> {
         return getMissionsCatalogByMission(inputValue)
     }
 
+    openReject = async () => {
+        this.setState({ showRejectModal: true })
+    }
+
     search = async (page: number) => {
         const searchScanner = this.state.searchScanner
 
@@ -133,16 +137,18 @@ export default class ScannersTab extends Component<any, any> {
             const headers = {
                 ...getHeader(),
                 'content-type': 'multipart/form-data',
+                'Access-Control-Allow-Origin' : '*',
+                'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
             }
 
             const form_data = new FormData();
 
-            form_data.append('region', '')
+            //form_data.append('region', '')
             form_data.append('mission', this.state.mission !== null ? this.state.mission : '')
             form_data.append('to', this.formatDate(searchScanner.to))
             form_data.append('from', this.formatDate(searchScanner.from))
             form_data.append('textSearch', searchScanner.textSearch)
-            form_data.append('perPage', searchScanner.perPage)
+            //form_data.append('perPage', searchScanner.perPage)
             form_data.append('sort', this.state.order)
 
             const response = await api.post(
@@ -153,28 +159,30 @@ export default class ScannersTab extends Component<any, any> {
 
             if (response.data.data.length > 0) {
                 const { order } = this.state
-                const pagination = response.data.pagination
-
+                //const pagination = response.data.pagination
+/*
                 const start = order === 'desc' ?
                     ((pagination.current_page - 1) * pagination.per_page) + 1 :
                     (pagination.total - ((pagination.current_page - 1) * pagination.per_page))
-
+*/
+                    const start = order === 'desc' ? 1 : 0
+                  
                 const searchScanners = response.data.data.map(
                     (searchScanner: searchScannerData, i: number) => (
                         {
                             ...searchScanner,
                             ranking: order === 'desc' ? start + i : start - i,
-                            efficiency: `${(Math.round(searchScanner.efficiency * 100)) / 100}%`
+                            efficiency: `${(Math.round((searchScanner.hasOwnProperty('efficiency') ? searchScanner.efficiency: 0) * 100)) / 100}%`
                         }
                     )
                 )
 
                 this.setState({
                     searchScanners,
-                    total: pagination.total,
-                    currentPage: pagination.current_page,
-                    count: pagination.count,
-                    totalPage: pagination.total_pages,
+                    //total: pagination.total,
+                    //currentPage: pagination.current_page,
+                    //count: pagination.count,
+                    //totalPage: pagination.total_pages,
                 })
             } else if (response.data.data.length === 0) {
                 this.setState({ searchScanners: [] })

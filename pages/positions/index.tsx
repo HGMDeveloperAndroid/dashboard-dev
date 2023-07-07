@@ -56,30 +56,35 @@ export default function PositionsPage() {
     )
 
     useEffect(() => {
-        loadData(currentPage),
+        loadData(currentPage)
         loadFirstThree()
     }, [textSearch, currentPage, order])
 
     async function loadData(page: number = 1) {
-        try {
+        try {/*
+            const data: {textSearch: string } = {
+                textSearch
+            }*/
             const data: { sort: string, textSearch: string } = {
                 textSearch, sort: order
             }
             const response = await api.post(`api/reports/ranking-efficiency?page=${page}`, data, {})
 
-            if (response.status === 200) {
+            if (response.status === 200) {/*
                 const {
                     count,
                     current_page,
                     per_page,
                     total,
                     total_pages,
-                } = response.data.pagination
+                } = response.data.pagination*/
 
                 // Start counting from here, for the rankings
-                const start = order === 'desc' ?
+/*                const start = order === 'desc' ?
                     ((current_page - 1) * per_page) + 1 :
-                    (total - ((currentPage - 1) * per_page))
+                    (total - ((currentPage - 1) * per_page))*/
+                    const start = order === 'desc' ?((1 - 1) * 1) + 1 :
+                    (1 - ((currentPage - 1) * 1))
 
                 const rankings = (response.data.data as UserResponse[]).map((user, i) => {
                     const ranking = order === 'desc' ?
@@ -87,7 +92,7 @@ export default function PositionsPage() {
                         start - i
 
                     // Round to 2 decimals
-                    const pct = (Math.round(user.efficiency * 100)) / 100
+                    const pct = (Math.round((user.hasOwnProperty('efficiency') ? user.efficiency: 0) * 100)) / 100
 
                     return {
                         ...user,
@@ -106,10 +111,13 @@ export default function PositionsPage() {
                     return e
                 })
 
-                setScannersRanking(rankings)
+                setScannersRanking(rankings)/*
                 setTotal(total)
                 setCount(count)
-                setTotalPage(total_pages)
+                setTotalPage(total_pages)*/
+                setTotal(1)
+                setCount(1)
+                setTotalPage(1)
                 setHeader(newHeader)
             }
         } catch (e) {
@@ -149,6 +157,14 @@ export default function PositionsPage() {
         }
     }
 
+    function showIconMedallas(props) {
+        const i = props;
+        if (i == 1 || i == 2 || i == 3) {
+          return i;
+        }
+        return 3;
+      }
+
     return (
         <>
             <Head>
@@ -166,7 +182,8 @@ export default function PositionsPage() {
                         firstPlaces.map((fp, i) => {
                             return (
                                 <div className={s.placeContainer} key={i}>
-                                    <img src={`/img/${i + 1}place.svg`} />
+                                    {/* <img src={`/img/${i + 1}place.svg`} /> */}
+                                    <img src={`/img/${showIconMedallas(i+1)}place.svg`} />
                                     <div>
                                         <p className={s.score}>{fp.validated_captures}</p>
                                         <p className={s.name}>{fp.name}</p>
@@ -184,15 +201,16 @@ export default function PositionsPage() {
                             onChange={changeTextSearch}
                             placeholder="Buscar por nombre o número de empleado"
                             placeholderOverLabel
+                            defaultValue={textSearch}
                         />
                     </div>
 
                     <div className="width20">
-                        <Checkbox
+                         <Checkbox
                             onChange={setSortDirection}
                             label="Orden descendente"
                             checked={order === 'asc'}
-                        />
+                        /> 
                     </div>
                 </div>
 

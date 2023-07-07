@@ -7215,7 +7215,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sass_maps_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../sass/maps.scss */ "./sass/maps.scss");
 /* harmony import */ var _sass_maps_scss__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_sass_maps_scss__WEBPACK_IMPORTED_MODULE_5__);
 
-var _jsxFileName = "C:\\Users\\hgm\\Desktop\\Maquina3B\\ManDoc\\Proyectos\\Php\\DashBoard\\SVN\\Develop\\pricecheck-dashboard\\pages\\_app.js";
+var _jsxFileName = "C:\\Users\\hgm\\Desktop\\Maquina3B\\ManDoc\\Proyectos\\Php\\DashBoard\\LOCAL\\develop\\pricecheck-dashboard\\pages\\_app.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
 
@@ -7498,7 +7498,7 @@ module.exports = content.locals || {};
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! next-client-pages-loader?page=%2F_app&absolutePagePath=private-next-pages%2F_app.js! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F_app&absolutePagePath=private-next-pages%2F_app.js!./");
-module.exports = __webpack_require__(/*! C:\Users\hgm\Desktop\Maquina3B\ManDoc\Proyectos\Php\DashBoard\SVN\Develop\pricecheck-dashboard\node_modules\next\dist\client\router.js */"./node_modules/next/dist/client/router.js");
+module.exports = __webpack_require__(/*! C:\Users\hgm\Desktop\Maquina3B\ManDoc\Proyectos\Php\DashBoard\LOCAL\develop\pricecheck-dashboard\node_modules\next\dist\client\router.js */"./node_modules/next/dist/client/router.js");
 
 
 /***/ })

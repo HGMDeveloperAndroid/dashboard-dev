@@ -419,7 +419,7 @@ class ScansPage extends Component<Props, State> {
             const response = await api.post(
                 `api/reports/scans?page=${page}`,
                 this.createData(),
-                { headers: getHeader() },
+                { headers: getHeader()},
             )
 
             if (response.status === 200) {

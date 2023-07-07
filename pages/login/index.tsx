@@ -60,7 +60,11 @@ export default class LoginPage extends PureComponent {
                 {
                     username: this.state.username,
                     password: this.state.password
-                },
+                },{headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin' : '*',
+                    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+                }}
             );
             if (response?.status === 200) {
                 const user = (response.data.user as UserResponse)

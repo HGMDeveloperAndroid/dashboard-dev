@@ -128,7 +128,7 @@ export default class ValidatorsTab extends Component<any, any> {
                     const {users, scans} = data;
 
                     const rankingValidators = users.map((rankingValidator: RankingValidatorData) => {
-                        const efficiency = (Math.round(rankingValidator.efficiency * 100)) / 100;
+                        const efficiency = (Math.round((rankingValidator.hasOwnProperty('efficiency') ? rankingValidator.efficiency: 0) * 100))/ 100;
 
                         return {
                             ...rankingValidator,
