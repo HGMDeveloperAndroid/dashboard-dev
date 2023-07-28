@@ -23,6 +23,8 @@ import { parse } from 'date-fns';
 import { getI18nLabel, translateTableHeader } from '../../../i18n';
 import { buildTheme } from '../../../utils/theme';
 
+import Axios from 'axios';
+
 type Mission = {
     title: string,
     description: string,
@@ -32,6 +34,7 @@ type Mission = {
     capture_points: number,
     mission_points: number,
     scans: boolean,
+    typo : string;
 }
 
 type MissionData = {
@@ -44,7 +47,8 @@ type MissionData = {
     regionsId?: number[],
     capture_points: number,
     mission_points: number,
-    scans: boolean;
+    scans: boolean,
+    typo : string;
 }
 
 type Region = {
@@ -68,6 +72,7 @@ const emptyMission = {
     capture_points: 1,
     mission_points: 0,
     scans: false,
+    typo: 'create',
 }
 
 class MissionsPage extends PureComponent<any, any> {
@@ -264,7 +269,9 @@ class MissionsPage extends PureComponent<any, any> {
 
         if (this.validateRequireFields(mission)) {
             try {
-                const response = await api.post('api/missions/', mission, { headers: getHeader() })
+                //const response = await api.post('api/missions/', mission, { headers: getHeader() })
+                const response = await api.post('api/missions/list', mission, { headers: getHeader() }) //hgm - 31/07/2023
+                const dataResponse = response.data
                 if (response.status === 201) {
                     this.setState({
                         mission: emptyMission,
@@ -289,14 +296,26 @@ class MissionsPage extends PureComponent<any, any> {
                             type: "error"
                         })
                     }
+                }else if (response.status === 400) {
+                    this.closeModal();
+                    if ('title' in response?.data['Validation errors']) {
+                        toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.duplicatedMessage'), {
+                            title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
+                            duration: 6,
+                            type: "error"
+                        })
+                    }
                 }
             } catch (error) {
+                console.error('API',error)
                 toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.message'), {
                     title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
                     duration: 6,
                     type: "error"
                 })
             }
+        }else{
+            console.log('API','No entro en el API la respuesta es Falsa')
         }
     }
 
@@ -423,6 +442,7 @@ class MissionsPage extends PureComponent<any, any> {
             capture_points: missionData.capture_points,
             mission_points: missionData.mission_points,
             scans: missionData.scans,
+            typo: 'create',
         }
 
         this.setState({
