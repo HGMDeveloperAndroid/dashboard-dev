@@ -276,9 +276,13 @@ class ScanDetails extends PureComponent<Props> {
 
             const hasPromoPicture = (res.data.scan.pictures[0]?.promo_picture) as string | null;
 
+            if(!res.data.scan.product){
+                alert('No existe informacion completa del Producto, Validar Captura Nuevamente')
+                Router.push('/home/scans')
+            }
             this.setState({
                 loadedScan,
-                loadedProduct: res.data.scan.product,
+                loadedProduct: res.data.scan.product > 0 ,
                 priceImg: res.data.scan.pictures.length > 0 ?
                     `${photoUrl}/${res.data.scan.pictures[0].shelf_picture}` :
                     null,
@@ -307,6 +311,7 @@ class ScanDetails extends PureComponent<Props> {
                 showLoader: false,
             })
         } catch (err) {
+            console.error(err.message)
             // TODO: enviar notificación cuando falla al obtener un scan
         }
     }
@@ -992,7 +997,7 @@ class ScanDetails extends PureComponent<Props> {
                         </DetailsContainer>
                     </div>
 
-                    {promoImg && (
+                     {promoImg && (
                         <div className={s.imageContainer}>
                             <DetailsContainer title={getI18nLabel(locale, 'capture.detailsContainer.title')}>
                                 <img
@@ -1002,7 +1007,7 @@ class ScanDetails extends PureComponent<Props> {
                                 />
                             </DetailsContainer>
                         </div>
-                    )}
+                    )} 
                 </div>
 
                 <Modal
