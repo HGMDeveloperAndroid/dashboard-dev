@@ -9,7 +9,7 @@ import { Table } from '../../../components/table';
 import Modal from '../../../components/modal/Modal';
 import { Input } from '../../../components/input';
 import Tags from '../../../components/input/Tags';
-import { getDarkTheme, validateSession, getHeader, IsCustomTheme, getTheme, getLocale } from '../../../utils/session-management'
+import { getDarkTheme, validateSession, getHeader, IsCustomTheme, getTheme, getLocale, getHeaderDev } from '../../../utils/session-management'
 import { getRegionsCatalog } from '../../../utils/catalogs'
 import api from '../../../utils/api';
 import DialogModal from '../../../components/modal/DialogModal';
@@ -264,14 +264,79 @@ class MissionsPage extends PureComponent<any, any> {
 
     createMission = async () => {
         const locale = getLocale()
-
+//"response.setHeader("Access-Control-Allow-Origin", "*");"
         const mission = this.checkAndAddFields(this.state.mission)
 
         if (this.validateRequireFields(mission)) {
-            try {
-                //const response = await api.post('api/missions/', mission, { headers: getHeader() })
-                const response = await api.post('api/missions/list', mission, { headers: getHeader() }) //hgm - 31/07/2023
-                const dataResponse = response.data
+            const response =await Axios.post('http://192.200.2.184:8000/api/missions/',
+            /*{
+                "id":"1",
+                        "title": "TestMan5",
+                        "description": "TestMan5",
+                        "mission_points": 10,
+                        "capture_points": 1,
+                        "start_date": "2023-08-01",
+                        "end_date": "2023-08-02",
+                        "regions": [
+                            14
+                        ],
+                        "typo":"create"
+            }*/mission,{headers: {
+                //'Content-Type': 'application/x-www-form-urlencoded',
+                'Access-Control-Allow-Origin' : '*',
+                'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                'Authorization':"Bearer "+localStorage.getItem('token')                    
+            }})
+                .then(res => {
+                  console.log(res);
+                  console.log(res.status);
+                  return res
+                })
+                .catch(function(error){
+                    console.error(error.message)
+                    return error
+                })
+
+                if (response.status === 201) {
+                    this.setState({
+                        mission: emptyMission,
+                        showModal: false,
+                        modalMissionId: null,
+                        missionEdited: emptyMission,
+                        tagList: [],
+                    })
+                    this.closeModal();
+                    this.getMissionList(1)
+                    toast.notify(getI18nLabel(locale, 'missions.toast.createMission.success.message'), {
+                        title: getI18nLabel(locale, 'missions.toast.createMission.success.title'),
+                        duration: 6,
+                        type: "success"
+                    })
+                } else if (response.status === 200) {
+                    this.closeModal();
+                    if ('title' in response?.data['Validation errors']) {
+                        toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.duplicatedMessage'), {
+                            title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
+                            duration: 6,
+                            type: "error"
+                        })
+                    }
+                }else if (response.status === 400) {
+                    this.closeModal();
+                    if ('title' in response?.data['Validation errors']) {
+                        toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.duplicatedMessage'), {
+                            title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
+                            duration: 6,
+                            type: "error"
+                        })
+                    }
+                }
+
+            /* try {
+                //const response = await api.post('api/missions/', mission, { headers: getHeaderDev() })
+                //const response = await api.post('api/missions/', mission, { headers: getHeaderDev() })
+                //const response = await api.post('api/missions/list', mission, { headers: getHeaderDev() }) //hgm - 31/07/2023
+                //const dataResponse = response.data
                 if (response.status === 201) {
                     this.setState({
                         mission: emptyMission,
@@ -307,13 +372,13 @@ class MissionsPage extends PureComponent<any, any> {
                     }
                 }
             } catch (error) {
-                console.error('API',error)
+                console.error('API',error.message)
                 toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.message'), {
                     title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
                     duration: 6,
                     type: "error"
                 })
-            }
+            } */
         }else{
             console.log('API','No entro en el API la respuesta es Falsa')
         }
