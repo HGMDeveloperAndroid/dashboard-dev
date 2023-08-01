@@ -4,5 +4,5 @@ import { baseURL } from './baseUrl';
 
 export default axios.create({
   baseURL,withCredentials: false
-  //timeout: 1000
+  ,timeout: 5000
 })

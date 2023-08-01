@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/positions": "pages/positions.js",
-  "/home/rankings": "pages/home/rankings.js"
+  "/home": "pages/home.js",
+  "/home/missions": "pages/home/missions.js"
 }

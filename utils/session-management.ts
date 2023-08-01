@@ -78,6 +78,16 @@ const getHeader = (): { Authorization: string } => {
     return { Authorization: `Bearer ${token}`}
 }
 
+const getHeaderDev = () => {
+    const token = localStorage.getItem('token')
+    return {
+    'Access-Control-Allow-Origin' : '*',
+    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    "Authorization":"Bearer "+token}
+}
+
+
 const validateIsAnalyst = () => {
     let role = '';
     if (typeof window !== "undefined") {
@@ -150,6 +160,7 @@ export {
     getRoles,
     validateSession,
     getHeader,
+    getHeaderDev,
     getId,
     getDarkTheme,
     getLocale,
