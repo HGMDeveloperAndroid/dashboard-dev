@@ -285,7 +285,7 @@ class MissionsPage extends PureComponent<any, any> {
                         "typo":"create"
             }*/mission,{headers: {
                 //'Content-Type': 'application/x-www-form-urlencoded',
-                'Access-Control-Allow-Origin' : 'https://price-api-dev-ajqcpwgpia-uc.a.run.app',
+                //'Access-Control-Allow-Origin' : 'https://price-api-dev-ajqcpwgpia-uc.a.run.app',
                 'Access-Control-Allow-Credentials': 'false',
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
                 'Authorization':"Bearer "+localStorage.getItem('token')                    
