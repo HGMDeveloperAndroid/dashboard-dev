@@ -28,6 +28,8 @@ import { Checkbox } from '../checkbox'
 import GoBackSpecific from '../goBackSpecificRoute'
 import { getI18nLabel } from '../../i18n';
 
+import { ToastContainer, toast } from 'react-nextjs-toast';
+
 type Props = {
     id: string
     router: any
@@ -275,9 +277,14 @@ class ScanDetails extends PureComponent<Props> {
             }
 
             const hasPromoPicture = (res.data.scan.pictures[0]?.promo_picture) as string | null;
-
+            const locale = getLocale()
             if(!res.data.scan.product){
-                alert('No existe informacion completa del Producto, Validar Captura Nuevamente')
+                //alert('No existe informacion completa del Producto, Validar Captura Nuevamente')
+                toast.notify(getI18nLabel(locale, 'No existe informacion completa del Producto, Validar Captura Nuevamente'), {
+                    title: getI18nLabel(locale, 'Informacion Consultada'),
+                    duration: 6,
+                    type: "error"
+                })
                 Router.push('/home/scans')
             }
             this.setState({
