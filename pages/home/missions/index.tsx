@@ -24,6 +24,7 @@ import { getI18nLabel, translateTableHeader } from '../../../i18n';
 import { buildTheme } from '../../../utils/theme';
 
 import Axios from 'axios';
+//import { baseURL } from './baseUrl';
 
 type Mission = {
     title: string,
@@ -266,9 +267,10 @@ class MissionsPage extends PureComponent<any, any> {
         const locale = getLocale()
 //"response.setHeader("Access-Control-Allow-Origin", "*");"
         const mission = this.checkAndAddFields(this.state.mission)
-
+        const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/';
         if (this.validateRequireFields(mission)) {
-            const response =await Axios.post('http://192.200.2.184:8000/api/missions/',
+            //const response =await Axios.post(baseURL+'api/missions/',
+            const response =await Axios.post(baseURL,
             /*{
                 "id":"1",
                         "title": "TestMan5",
@@ -282,7 +284,7 @@ class MissionsPage extends PureComponent<any, any> {
                         ],
                         "typo":"create"
             }*/mission,{headers: {
-                //'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin' : '*',
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
                 'Authorization':"Bearer "+localStorage.getItem('token')                    
