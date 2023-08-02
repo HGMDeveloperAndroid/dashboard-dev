@@ -286,6 +286,7 @@ class MissionsPage extends PureComponent<any, any> {
             }*/mission,{headers: {
                 //'Content-Type': 'application/x-www-form-urlencoded',
                 'Access-Control-Allow-Origin' : '*',
+                'Access-Control-Allow-Credentials': 'true',
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
                 'Authorization':"Bearer "+localStorage.getItem('token')                    
             }})
