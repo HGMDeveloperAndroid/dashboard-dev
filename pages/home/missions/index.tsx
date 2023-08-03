@@ -23,11 +23,6 @@ import { parse } from 'date-fns';
 import { getI18nLabel, translateTableHeader } from '../../../i18n';
 import { buildTheme } from '../../../utils/theme';
 
-import Axios from 'axios';
-import { error } from 'console';
-//import { baseURL } from './baseUrl';
-import API from '../../../utils/api';
-
 type Mission = {
     title: string,
     description: string,
@@ -271,70 +266,8 @@ class MissionsPage extends PureComponent<any, any> {
         const mission = this.checkAndAddFields(this.state.mission)
         const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/create/';
         if (this.validateRequireFields(mission)) {
-            //const response =await Axios.post(baseURL+'api/missions/',
-            const response =await Axios.post(baseURL,
-            mission,{headers: {
-                'Access-Control-Allow-Credentials': 'false',
-                'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                'Authorization':"Bearer "+localStorage.getItem('token')                    
-            }})
-                .then(
-                 res => {
-                        
-                  console.log(res);
-                  console.log(res.status);
-                  return res
-                })
-                .catch(function(error){
-                    console.error('API',error.message)
-                    toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.message'), {
-                        title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
-                        duration: 6,
-                        type: "error"
-                    })
-                    return error
-                })
-                if (response.status === 201) {
-                    this.setState({
-                        mission: emptyMission,
-                        showModal: false,
-                        modalMissionId: null,
-                        missionEdited: emptyMission,
-                        tagList: [],
-                    })
-                    this.closeModal();
-                    this.getMissionList(1)
-                    toast.notify(getI18nLabel(locale, 'missions.toast.createMission.success.message'), {
-                        title: getI18nLabel(locale, 'missions.toast.createMission.success.title'),
-                        duration: 6,
-                        type: "success"
-                    })
-                } else if (response.status === 200) {
-                    this.closeModal();
-                    if ('title' in response?.data['Validation errors']) {
-                        toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.duplicatedMessage'), {
-                            title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
-                            duration: 6,
-                            type: "error"
-                        })
-                    }
-                }else if (response.status === 400) {
-                    this.closeModal();
-                    if ('title' in response?.data['Validation errors']) {
-                        toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.duplicatedMessage'), {
-                            title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
-                            duration: 6,
-                            type: "error"
-                        })
-                    }
-                }
-
-
-            /* try {
-                //const response = await api.post('api/missions/', mission, { headers: getHeaderDev() })
-                //const response = await api.post('api/missions/', mission, { headers: getHeaderDev() })
-                //const response = await api.post('api/missions/list', mission, { headers: getHeaderDev() }) //hgm - 31/07/2023
-                //const dataResponse = response.data
+            try {
+                const response = await api.post('api/missions/create/', mission, { headers: getHeader() }) //hgm - 31/07/2023
                 if (response.status === 201) {
                     this.setState({
                         mission: emptyMission,
@@ -376,7 +309,7 @@ class MissionsPage extends PureComponent<any, any> {
                     duration: 6,
                     type: "error"
                 })
-            } */
+            } 
         }else{
             console.log('API','No entro en el API la respuesta es Falsa')
         }

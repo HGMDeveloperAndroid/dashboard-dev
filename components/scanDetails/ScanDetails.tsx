@@ -29,6 +29,8 @@ import GoBackSpecific from '../goBackSpecificRoute'
 import { getI18nLabel } from '../../i18n';
 
 import { ToastContainer, toast } from 'react-nextjs-toast';
+import DialogModal from '../../components/modal/DialogModal';
+import { PrimaryButtonVariant } from '../../components/buttons/PrimaryButton';
 
 type Props = {
     id: string
@@ -229,6 +231,7 @@ class ScanDetails extends PureComponent<Props> {
         productImgUp: '',
         promoImg: null,
         isAnalyst: false,
+        isOpen: false,
     }
 
 
@@ -278,14 +281,16 @@ class ScanDetails extends PureComponent<Props> {
 
             const hasPromoPicture = (res.data.scan.pictures[0]?.promo_picture) as string | null;
             const locale = getLocale()
-            if(!res.data.scan.product){
-                //alert('No existe informacion completa del Producto, Validar Captura Nuevamente')
-                toast.notify(getI18nLabel(locale, 'No existe informacion completa del Producto, Validar Captura Nuevamente'), {
+            if(!res.data.scan.product){ //hgm - 07/08/2023
+                console.error('Product: ',res.data.scan.product)
+                alert('No existe informacion completa del Producto, Validar Captura Nuevamente')
+                /* toast.notify(getI18nLabel(locale, 'No existe informacion completa del Producto, Validar Captura Nuevamente'), {
                     title: getI18nLabel(locale, 'Informacion Consultada'),
                     duration: 6,
                     type: "error"
-                })
+                }) */
                 Router.push('/home/scans')
+                return
             }
             this.setState({
                 loadedScan,
@@ -716,6 +721,7 @@ class ScanDetails extends PureComponent<Props> {
             productImg,
             promoImg,
             isAnalyst,
+            isOpen,
         } = this.state
 
         const locale = getLocale()
@@ -1035,6 +1041,15 @@ class ScanDetails extends PureComponent<Props> {
                         className={s.modalImage}
                     />
                 </Modal>
+
+                {/* <DialogModal
+                    btnAcceptLabel={getI18nLabel(locale, 'missions.modal.dialog.options.acept')}
+                    isOpen={isOpen}
+                    message={getI18nLabel(locale, 'missions.modal.dialog.message')}
+                    onClose={() => this.setState({ isOpen: false })}
+                    btnAcceptType={PrimaryButtonVariant.Success}
+                    onAccept={() => this.setState({ isOpen: false })} />
+                <ToastContainer align="left" position="bottom" /> */}
             </div>
         )
     }
