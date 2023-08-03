@@ -24,7 +24,9 @@ import { getI18nLabel, translateTableHeader } from '../../../i18n';
 import { buildTheme } from '../../../utils/theme';
 
 import Axios from 'axios';
+import { error } from 'console';
 //import { baseURL } from './baseUrl';
+import API from '../../../utils/api';
 
 type Mission = {
     title: string,
@@ -262,44 +264,80 @@ class MissionsPage extends PureComponent<any, any> {
         const tagList: Tag[] = this.state.tagList.filter((e: Tag) => e.id !== id)
         this.setState({ tagList })
     }
+/*
+    createMission = async (e: SyntheticEvent) => {
+        ///e.preventDefault()
+        const mission = this.checkAndAddFields(this.state.mission)
+        const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/list/';
+        try {
+            const response = await API.post(
+                '/api/missions/',
+                mission,{headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin' : '*',
+                    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+                    'Authorization':"Bearer "+localStorage.getItem('token')
+                }}
+            );
+            if (response?.status === 200) {
+               
+            }
+        } catch (error) {
+            if (error && error.response && error.response.status && error.response.status === 307) {
+            
+            }
 
+            if (error?.response?.status === 401) {
+                this.setState({
+                    showErrorMessage: true,
+                    errorMessage: 'Usuario o contraseña incorrectos',
+                })
+            }
+        }
+    }
+*/
+    
     createMission = async () => {
         const locale = getLocale()
 //"response.setHeader("Access-Control-Allow-Origin", "*");"
         const mission = this.checkAndAddFields(this.state.mission)
-        const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/';
+        const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/list/';
         if (this.validateRequireFields(mission)) {
             //const response =await Axios.post(baseURL+'api/missions/',
+
             const response =await Axios.post(baseURL,
-            /*{
-                "id":"1",
-                        "title": "TestMan5",
-                        "description": "TestMan5",
-                        "mission_points": 10,
-                        "capture_points": 1,
-                        "start_date": "2023-08-01",
-                        "end_date": "2023-08-02",
-                        "regions": [
-                            14
-                        ],
-                        "typo":"create"
-            }*/mission,{headers: {
+            mission,{headers: {
                 //'Content-Type': 'application/x-www-form-urlencoded',
                 //'Access-Control-Allow-Origin' : 'https://price-api-dev-ajqcpwgpia-uc.a.run.app',
                 'Access-Control-Allow-Credentials': 'false',
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
                 'Authorization':"Bearer "+localStorage.getItem('token')                    
             }})
-                .then(res => {
+                .then(
+                 res => {
+                        
                   console.log(res);
                   console.log(res.status);
                   return res
                 })
                 .catch(function(error){
-                    console.error(error.message)
+                    //console.error(error.message)
+                    /*this.setState({
+                        mission: emptyMission,
+                        showModal: false,
+                        modalMissionId: null,
+                        missionEdited: emptyMission,
+                        tagList: [],
+                    })*/
+                    //this.state.closeModal();
+                    //this.getMissionList(1)
+                    toast.notify(getI18nLabel(locale, 'missions.toast.createMission.success.message'), {
+                        title: getI18nLabel(locale, 'missions.toast.createMission.success.title'),
+                        duration: 6,
+                        type: "success"
+                    })
                     return error
                 })
-
                 if (response.status === 201) {
                     this.setState({
                         mission: emptyMission,
@@ -317,13 +355,13 @@ class MissionsPage extends PureComponent<any, any> {
                     })
                 } else if (response.status === 200) {
                     this.closeModal();
-                    if ('title' in response?.data['Validation errors']) {
+                    //if ('title' in response?.data['Validation errors']) {
                         toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.duplicatedMessage'), {
                             title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
                             duration: 6,
                             type: "error"
                         })
-                    }
+                    //}
                 }else if (response.status === 400) {
                     this.closeModal();
                     if ('title' in response?.data['Validation errors']) {
@@ -334,6 +372,7 @@ class MissionsPage extends PureComponent<any, any> {
                         })
                     }
                 }
+
 
             /* try {
                 //const response = await api.post('api/missions/', mission, { headers: getHeaderDev() })
