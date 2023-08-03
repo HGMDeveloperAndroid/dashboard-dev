@@ -264,55 +264,16 @@ class MissionsPage extends PureComponent<any, any> {
         const tagList: Tag[] = this.state.tagList.filter((e: Tag) => e.id !== id)
         this.setState({ tagList })
     }
-/*
-    createMission = async (e: SyntheticEvent) => {
-        ///e.preventDefault()
-        const mission = this.checkAndAddFields(this.state.mission)
-        const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/list/';
-        try {
-            const response = await API.post(
-                '/api/missions/',
-                mission,{headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin' : '*',
-                    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                    'Authorization':"Bearer "+localStorage.getItem('token')
-                }}
-            );
-            if (response?.status === 200) {
-               
-            }
-        } catch (error) {
-            if (error && error.response && error.response.status && error.response.status === 307) {
-            
-            }
 
-<<<<<<< HEAD
-            if (error?.response?.status === 401) {
-                this.setState({
-                    showErrorMessage: true,
-                    errorMessage: 'Usuario o contraseña incorrectos',
-                })
-            }
-        }
-    }
-*/
     
     createMission = async () => {
-=======
-     createMission = async () => {
->>>>>>> d54779cc05ca8d46318d5adb6d11751cc975c774
         const locale = getLocale()
-//"response.setHeader("Access-Control-Allow-Origin", "*");"
         const mission = this.checkAndAddFields(this.state.mission)
-        const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/list/';
+        const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/create';
         if (this.validateRequireFields(mission)) {
             //const response =await Axios.post(baseURL+'api/missions/',
-
             const response =await Axios.post(baseURL,
             mission,{headers: {
-                //'Content-Type': 'application/x-www-form-urlencoded',
-                //'Access-Control-Allow-Origin' : 'https://price-api-dev-ajqcpwgpia-uc.a.run.app',
                 'Access-Control-Allow-Credentials': 'false',
                 'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
                 'Authorization':"Bearer "+localStorage.getItem('token')                    
@@ -325,20 +286,11 @@ class MissionsPage extends PureComponent<any, any> {
                   return res
                 })
                 .catch(function(error){
-                    //console.error(error.message)
-                    /*this.setState({
-                        mission: emptyMission,
-                        showModal: false,
-                        modalMissionId: null,
-                        missionEdited: emptyMission,
-                        tagList: [],
-                    })*/
-                    //this.state.closeModal();
-                    //this.getMissionList(1)
-                    toast.notify(getI18nLabel(locale, 'missions.toast.createMission.success.message'), {
-                        title: getI18nLabel(locale, 'missions.toast.createMission.success.title'),
+                    console.error('API',error.message)
+                    toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.message'), {
+                        title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
                         duration: 6,
-                        type: "success"
+                        type: "error"
                     })
                     return error
                 })
@@ -359,13 +311,13 @@ class MissionsPage extends PureComponent<any, any> {
                     })
                 } else if (response.status === 200) {
                     this.closeModal();
-                    //if ('title' in response?.data['Validation errors']) {
+                    if ('title' in response?.data['Validation errors']) {
                         toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.duplicatedMessage'), {
                             title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
                             duration: 6,
                             type: "error"
                         })
-                    //}
+                    }
                 }else if (response.status === 400) {
                     this.closeModal();
                     if ('title' in response?.data['Validation errors']) {
