@@ -287,6 +287,7 @@ class MissionsPage extends PureComponent<any, any> {
             
             }
 
+<<<<<<< HEAD
             if (error?.response?.status === 401) {
                 this.setState({
                     showErrorMessage: true,
@@ -298,6 +299,9 @@ class MissionsPage extends PureComponent<any, any> {
 */
     
     createMission = async () => {
+=======
+     createMission = async () => {
+>>>>>>> d54779cc05ca8d46318d5adb6d11751cc975c774
         const locale = getLocale()
 //"response.setHeader("Access-Control-Allow-Origin", "*");"
         const mission = this.checkAndAddFields(this.state.mission)
