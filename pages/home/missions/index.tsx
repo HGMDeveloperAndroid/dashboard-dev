@@ -269,7 +269,7 @@ class MissionsPage extends PureComponent<any, any> {
     createMission = async () => {
         const locale = getLocale()
         const mission = this.checkAndAddFields(this.state.mission)
-        const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/create';
+        const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/create/';
         if (this.validateRequireFields(mission)) {
             //const response =await Axios.post(baseURL+'api/missions/',
             const response =await Axios.post(baseURL,
