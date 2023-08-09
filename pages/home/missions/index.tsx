@@ -277,13 +277,12 @@ class MissionsPage extends PureComponent<any, any> {
                         tagList: [],
                     })
                     this.closeModal();
-                    this.getMissionList(1)
+                    //this.getMissionList(1)
                     toast.notify(getI18nLabel(locale, 'missions.toast.createMission.success.message'), {
                         title: getI18nLabel(locale, 'missions.toast.createMission.success.title'),
                         duration: 6,
                         type: "success"
                     })
-                    this.getNotifyc(mission);
                 } else if (response.status === 200) {
                     this.closeModal();
                     if ('title' in response?.data['Validation errors']) {
@@ -303,6 +302,7 @@ class MissionsPage extends PureComponent<any, any> {
                         })
                     }
                 }
+                this.getNotifyc(mission);
             } catch (error) {
                 console.error('API',error.message)
                 toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.message'), {
@@ -359,6 +359,7 @@ class MissionsPage extends PureComponent<any, any> {
                 }
             } catch (error) {
                 console.error('API',error.message)
+                this.getMissionList(1);
             } 
         }else{
             console.log('API','No entro en el API la respuesta es Falsa')
