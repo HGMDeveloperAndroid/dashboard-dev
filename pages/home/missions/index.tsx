@@ -283,6 +283,7 @@ class MissionsPage extends PureComponent<any, any> {
                         duration: 6,
                         type: "success"
                     })
+                    this.getNotifyc(mission);
                 } else if (response.status === 200) {
                     this.closeModal();
                     if ('title' in response?.data['Validation errors']) {
@@ -309,6 +310,55 @@ class MissionsPage extends PureComponent<any, any> {
                     duration: 6,
                     type: "error"
                 })
+            } 
+        }else{
+            console.log('API','No entro en el API la respuesta es Falsa')
+        }
+    }
+
+    getNotifyc = async (mission) => {
+        const locale = getLocale()
+        //const missiones = mission
+        //const baseURL = process.env.NEXT_PUBLIC_API_URL+'api/missions/create/';
+        if (this.validateRequireFields(mission)) {
+            try {
+                const response = await api.post('api/missions/notifyc/', mission, { headers: getHeader() }) //hgm - 31/07/2023
+                if (response.status === 201) {
+                    this.setState({
+                        mission: emptyMission,
+                        showModal: false,
+                        modalMissionId: null,
+                        missionEdited: emptyMission,
+                        tagList: [],
+                    })
+                    this.closeModal();
+                    this.getMissionList(1)
+                    toast.notify(getI18nLabel(locale, 'missions.toast.createMission.success.message'), {
+                        title: getI18nLabel(locale, 'missions.toast.createMission.success.title'),
+                        duration: 6,
+                        type: "success"
+                    })
+                    } else if (response.status === 200) {
+                    this.closeModal();
+                    if ('title' in response?.data['Validation errors']) {
+                        toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.duplicatedMessage'), {
+                            title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
+                            duration: 6,
+                            type: "error"
+                        })
+                    }
+                }else if (response.status === 400) {
+                    this.closeModal();
+                    if ('title' in response?.data['Validation errors']) {
+                        toast.notify(getI18nLabel(locale, 'missions.toast.createMission.error.duplicatedMessage'), {
+                            title: getI18nLabel(locale, 'missions.toast.createMission.error.title'),
+                            duration: 6,
+                            type: "error"
+                        })
+                    }
+                }
+            } catch (error) {
+                console.error('API',error.message)
             } 
         }else{
             console.log('API','No entro en el API la respuesta es Falsa')
